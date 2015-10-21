@@ -6,18 +6,11 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/21 17:45:42 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/21 21:47:56 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include "libft.h"
-#include "ftp.h"
+#include "server.h"
 
 void	usage(char *s)
 {
@@ -25,14 +18,6 @@ void	usage(char *s)
 	ft_putstr(s);
 	puts(" <port>");
 	exit(-1);
-}
-
-void	display_message(int r, char *s)
-{
-		ft_putstr("Message received of ");
-		ft_putnbr(r);
-		ft_puts(" Bytes the message:");
-		ft_putstr(s);
 }
 
 int		create_server(int port)
@@ -67,14 +52,16 @@ void	do_something(t_data *d, char **e)
 	{
 		d->r = read(d->cs, d->buf, 1023);
 		d->buf[d->r] = '\0';
-		if (!ft_strncmp(d->buf, "quit", 4))
+		write(1, d->buf, d->r);
+		write(1, "\n", 1);
+		if (!ft_strncmp(d->buf, "ls", 2))
+			ls(d->cs, d->buf);
+		else if (!ft_strncmp(d->buf, "quit", 4))
 		{
-			send(d->cs, s, ft_strlen(s), MSG_OOB);
+			send(d->cs, s, ft_strlen(s) + 1, MSG_OOB);
 			send(d->cs, "\006", 2, MSG_OOB);
 		}
-		else if (d->buf)
-			display_message(d->r, d->buf);
-		send(d->cs, "\007", 2, MSG_OOB);
+		send(d->cs, "\007", 2, 0);
 	}
 }
 
