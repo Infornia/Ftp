@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/21 21:03:47 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/22 15:01:15 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,17 @@ typedef struct s_data
 }				t_data;
 
 /*
-**ftp_ls.c
+**ftp_ls_pwd.c
 */
 
 void	ls(int cs, char *buf);
+void	pwd(int cs, char *buf);
 
 /*
 **ftp_utils.c
 */
 
 void	put_error(int cs, int error_type);
+void	quit(int cs);
 
 #endif

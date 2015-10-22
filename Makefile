@@ -6,7 +6,7 @@
 #    By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/09/29 18:08:50 by mwilk             #+#    #+#              #
-#    Updated: 2015/10/21 21:05:04 by mwilk            ###   ########.fr        #
+#    Updated: 2015/10/22 11:38:22 by mwilk            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC_PATH = ./
 
 OBJ = $(SRC:.c=.o)
 SRC = server.c\
-	  ftp_ls.c\
+	  ftp_ls_pwd.c\
 	  ftp_utils.c\
 
 OBJS = $(addprefix $(OJB_PATH),$(OBJ))

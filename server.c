@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/21 21:47:56 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/22 15:20:03 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,6 @@ int		create_server(int port)
 void	do_something(t_data *d, char **e)
 {
 	(void)e;
-	char *s;
-
-	s = "\033[32mBye My Friend, you're disconnected\033[0m\n";
 	while (22)
 	{
 		d->r = read(d->cs, d->buf, 1023);
@@ -56,22 +53,30 @@ void	do_something(t_data *d, char **e)
 		write(1, "\n", 1);
 		if (!ft_strncmp(d->buf, "ls", 2))
 			ls(d->cs, d->buf);
+		else if (!ft_strncmp(d->buf, "pwd", 3))
+			pwd(d->cs, d->buf);
 		else if (!ft_strncmp(d->buf, "quit", 4))
-		{
-			send(d->cs, s, ft_strlen(s) + 1, MSG_OOB);
-			send(d->cs, "\006", 2, MSG_OOB);
-		}
+			quit(d->cs);
 		send(d->cs, "\007", 2, 0);
 	}
 }
 
 void	fork_this(t_data *d, char **e, int sock)
 {
+	int		pid;
+	int		status;
+
+	pid = fork();
 	d->cs = accept(sock, (struct sockaddr*)&d->csin, &d->cslen);
-	if (fork() == 0)
+	if (pid > 0)
+	{
 		do_something(d, e);
+		exit(0);
+	}
+	else if (pid == 0)
+		wait(&status);
 	else
-		fork_this(d, e, sock);
+		exit(0);
 }
 
 int		main(int ac, char **av, char **e)
