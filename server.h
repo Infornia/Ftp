@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/22 15:01:15 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/22 18:20:39 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_data
 	struct sockaddr_in		csin;
 	int		r;
 	char	buf[1024];
+	char	*home;
 }				t_data;
 
 /*
@@ -48,6 +49,7 @@ typedef struct s_data
 
 void	ls(int cs, char *buf);
 void	pwd(int cs, char *buf);
+void	cd(int cs, char *buf, char *home);
 
 /*
 **ftp_utils.c

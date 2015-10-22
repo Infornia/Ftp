@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/22 15:20:03 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/22 18:57:43 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,16 @@ void	do_something(t_data *d, char **e)
 	while (22)
 	{
 		d->r = read(d->cs, d->buf, 1023);
-		d->buf[d->r] = '\0';
+		d->buf[d->r - 1] = '\0';
 		write(1, d->buf, d->r);
 		write(1, "\n", 1);
 		if (!ft_strncmp(d->buf, "ls", 2))
 			ls(d->cs, d->buf);
 		else if (!ft_strncmp(d->buf, "pwd", 3))
 			pwd(d->cs, d->buf);
-		else if (!ft_strncmp(d->buf, "quit", 4))
+		else if (!ft_strncmp(d->buf, "cd", 2))
+			cd(d->cs, d->buf, d->home);
+		else if (!ft_strcmp(d->buf, "quit"))
 			quit(d->cs);
 		send(d->cs, "\007", 2, 0);
 	}
@@ -66,17 +68,22 @@ void	fork_this(t_data *d, char **e, int sock)
 	int		pid;
 	int		status;
 
-	pid = fork();
-	d->cs = accept(sock, (struct sockaddr*)&d->csin, &d->cslen);
-	if (pid > 0)
+	while (22)
 	{
-		do_something(d, e);
-		exit(0);
+	if ((d->cs = accept(sock, (struct sockaddr*)&d->csin, &d->cslen)) >= 0)
+	{
+		pid = fork();
+		if (pid > 0)
+		{
+			do_something(d, e);
+			exit(0);
+		}
+		else if (pid == 0)
+			wait(&status);
+		else
+			exit(0);
 	}
-	else if (pid == 0)
-		wait(&status);
-	else
-		exit(0);
+	}
 }
 
 int		main(int ac, char **av, char **e)
@@ -84,11 +91,13 @@ int		main(int ac, char **av, char **e)
 	t_data					d;
 	int						port;
 	int						sock;
+	char					b[2048];
 
 	if (ac != 2)
 		usage(av[0]);
 	port = ft_atoi(av[1]);
 	sock = create_server(port);
+	d.home = getcwd(b, 2048);
 	fork_this(&d, e, sock);
 	close(d.cs);
 	close(sock);

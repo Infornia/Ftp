@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/21 20:35:37 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/22 15:25:52 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/22 20:22:42 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,43 @@ void	pwd(int cs, char *buf)
 	cwd = getcwd(buff, 2048);
 	send(cs, cwd, ft_strlen(cwd) + 1, MSG_OOB);
 	send(cs, "\n", 2, MSG_OOB);
+}
+
+void	cd_helper(int cs, char *home, char *folder)
+{
+	char		buff[2048];
+	char		*cwd;
+
+	cwd = getcwd(buff, 2048);
+	ft_puts(cwd);
+	if (!strncmp(home, folder, ft_strlen(home)) && !chdir(folder))
+		send(cs, "Cd Success (new dir)\n", 22, MSG_OOB);
+	else
+	{
+		put_error(cs, NOT_FOUND);
+		chdir(cwd);
+	}
+}
+
+void	cd(int cs, char *buf, char *home)
+{
+	char	**t;
+	size_t	cmp;
+
+	t = ft_strsplit(buf, ' ');
+	cmp = ft_strncmp(t[0], "cd", 2);
+	if (cmp)
+	{
+		put_error(cs, NOT_FOUND);
+		return ;
+	}
+	else if (!cmp && !t[1])
+	{
+		chdir(home);
+		send(cs, "Cd Success (Back to Home my Friend)\n", 37, MSG_OOB);
+	}
+	else if (!cmp && t[1])
+		cd_helper(cs, home, t[1]);
+	if (t)
+		free(t);
 }
