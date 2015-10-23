@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/21 20:35:37 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/22 20:22:42 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/23 12:04:59 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ void	cd_helper(int cs, char *home, char *folder)
 	char		*cwd;
 
 	cwd = getcwd(buff, 2048);
-	ft_puts(cwd);
-	if (!strncmp(home, folder, ft_strlen(home)) && !chdir(folder))
+	if (!strncmp(home, cwd, ft_strlen(home)) && !chdir(folder))
 		send(cs, "Cd Success (new dir)\n", 22, MSG_OOB);
 	else
 	{
@@ -85,7 +84,7 @@ void	cd(int cs, char *buf, char *home)
 	size_t	cmp;
 
 	t = ft_strsplit(buf, ' ');
-	cmp = ft_strncmp(t[0], "cd", 2);
+	cmp = ft_strcmp(t[0], "cd");
 	if (cmp)
 	{
 		put_error(cs, NOT_FOUND);

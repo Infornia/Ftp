@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/22 18:20:39 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/23 11:53:43 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,15 @@
 
 typedef struct s_data
 {
+	int						sock;
 	int						cs;
 	unsigned int			cslen;
 	struct sockaddr_in		csin;
 	int		r;
 	char	buf[1024];
 	char	*home;
+
+	int					run;
 }				t_data;
 
 /*
@@ -56,6 +59,6 @@ void	cd(int cs, char *buf, char *home);
 */
 
 void	put_error(int cs, int error_type);
-void	quit(int cs);
+void	quit(t_data *d, int cs);
 
 #endif
