@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   client.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/23 15:37:24 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/23 15:53:12 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
+#ifndef CLIENT_H
+# define CLIENT_H
 
 /*
 **includes
@@ -24,8 +24,9 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <sys/socket.h>
-#include "libft.h"
+#include "Libft/includes/libft.h"
 
 /*
 **defines

@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/23 11:53:41 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/23 16:09:51 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	usage(char *s)
 {
-	ft_putstr("Usage: ");
-	ft_putstr(s);
-	puts(" <port>");
+	printf("Usage: %s <port>", s);
 	exit(-1);
 }
 
@@ -49,17 +47,18 @@ void	do_something(t_data *d, char **e)
 	{
 		d->r = read(d->cs, d->buf, 1023);
 		d->buf[d->r - 1] = '\0';
-		write(1, d->buf, d->r);
-		write(1, "\n", 1);
 		if (!ft_strncmp(d->buf, "ls", 2))
 			ls(d->cs, d->buf);
-		else if (!ft_strncmp(d->buf, "pwd", 3))
+		else if (!ft_strcmp(d->buf, "pwd"))
 			pwd(d->cs, d->buf);
 		else if (!ft_strncmp(d->buf, "cd", 2))
 			cd(d->cs, d->buf, d->home);
+		else if (!ft_strncmp(d->buf, "get", 3))
+			get(d->cs, d->buf);
 		else if (!ft_strcmp(d->buf, "quit"))
 			quit(d, d->cs);
-		send(d->cs, "\007", 2, 0);
+		write(1, d->buf, d->r);
+		write(1, "\n", 1);
 	}
 }
 
@@ -74,10 +73,7 @@ void	fork_this(t_data *d, char **e, int sock)
 		{
 			pid = fork();
 			if (pid > 0)
-			{
 				do_something(d, e);
-				exit(0);
-			}
 			else if (pid == 0)
 				wait(&status);
 			else

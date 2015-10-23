@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/21 20:35:37 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/23 12:04:59 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/23 15:48:58 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	ls(int cs, char *buf)
 	pid = fork();
 	if (pid > 0)
 	{
+		send(cs, "Ls Success\n", 12, MSG_OOB);
 		dup2(cs, 1);
 		dup2(cs, 2);
 		close(cs);
 		t = ft_strsplit(buf, ' ');
 		if (!ft_strncmp(t[0], "ls", 2))
 		{
-			send(cs, "Ls Success\n", 12, MSG_OOB);
 			execv("/bin/ls", &t[0]);
 			ft_puts("Fail of execv Bro");
 		}
@@ -69,12 +69,20 @@ void	cd_helper(int cs, char *home, char *folder)
 	char		*cwd;
 
 	cwd = getcwd(buff, 2048);
-	if (!strncmp(home, cwd, ft_strlen(home)) && !chdir(folder))
-		send(cs, "Cd Success (new dir)\n", 22, MSG_OOB);
+	if (!strncmp(home, cwd, ft_strlen(home)))
+		chdir(folder);
 	else
 	{
 		put_error(cs, NOT_FOUND);
 		chdir(cwd);
+	}
+	cwd = getcwd(buff, 2048);
+	if (ft_strcmp(home, cwd) <= 0)
+		send(cs, "Cd Success (new dir)\n", 22, MSG_OOB);
+	else
+	{
+		send(cs, "Haha no you can't leave your home (back to home) \n", 52, MSG_OOB);
+		chdir(home);
 	}
 }
 
