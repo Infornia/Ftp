@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/21 20:35:37 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/23 15:48:58 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/24 17:36:17 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@ void	ls(int cs, char *buf)
 	char			**t;
 
 	pid = fork();
-	if (pid > 0)
+	if (pid == 0)
 	{
-		send(cs, "Ls Success\n", 12, MSG_OOB);
+		write(cs, "\033[32mSUCCESS: Ls\n\033[0m", 23);
 		dup2(cs, 1);
 		dup2(cs, 2);
-		close(cs);
 		t = ft_strsplit(buf, ' ');
 		if (!ft_strncmp(t[0], "ls", 2))
 		{
@@ -35,9 +34,8 @@ void	ls(int cs, char *buf)
 			put_error(cs, NOT_FOUND);
 		if (t)
 			free(t);
-		exit(0);
 	}
-	else if (pid == 0)
+	else if (pid > 0)
 		wait(&status);
 	else
 		exit(0);
@@ -57,7 +55,7 @@ void	pwd(int cs, char *buf)
 		put_error(cs, NOT_FOUND);
 		return ;
 	}
-	send(cs, "Pwd Success\n", 13, MSG_OOB);
+	send(cs, "\033[32mPwd Success\n\033[0m", 24, MSG_OOB);
 	cwd = getcwd(buff, 2048);
 	send(cs, cwd, ft_strlen(cwd) + 1, MSG_OOB);
 	send(cs, "\n", 2, MSG_OOB);

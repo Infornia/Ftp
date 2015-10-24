@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/23 15:37:24 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/24 17:44:54 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 */
 
 #define NOT_FOUND 1
+#define END "\005"
 
 typedef struct s_data
 {
@@ -59,7 +60,7 @@ void	cd(int cs, char *buf, char *home);
 */
 
 void	put_error(int cs, int error_type);
-void	quit(t_data *d, int cs);
+void	quit(int cs, int ss);
 
 
 /*

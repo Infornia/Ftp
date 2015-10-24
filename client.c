@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/24 13:09:01 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/24 17:52:11 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,32 @@ void	usage(char *s)
 	exit(-1);
 }
 
-void	quit_client(char *buf)
+static void	quit_client(int sock, char *buf)
 {
 	if (!ft_strcmp(buf, "quit"))
 	{
 		printf("\033[32mGood bye !\033[0m");
+		close(sock);
 		exit(0);
+	}
+}
+
+void	recep(int sock)
+{
+	int		r;
+	char	buff[2048];
+
+	while ((r = recv(sock, buff, sizeof(buff), 0)) > 0)
+	{
+		buff[r] = 0;
+		if (!ft_strcmp(buff, END))
+			return ;
+		write(1, buff, r);
+	}
+	if (r == -1)
+	{
+		printf("\033[31mERROR: Recep problem\n\033[0m");
+		exit(2);
 	}
 }
 
@@ -61,12 +81,12 @@ int		main(int ac, char **av)
 	sock = create_client(av[1], port);
 	while (22)
 	{
-		write(1, "\033[33m (>^.^)> Client <(^.^<) -> \033[0m", 42);
+		write(1, "\033[33m (>^.^)> Client <(^.^<) -> \033[0m", 37);
 		r = read(0, buff, 1023);
 		buff[r - 1] = 0;
 		write(sock, buff, r);
-		quit_client(buff);
-		//recep(sock);
+		recep(sock);
+		quit_client(sock, buff);
 	}
 	close(sock);
 	return (0);
