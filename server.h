@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/24 17:44:54 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/24 18:36:52 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_data
 */
 
 void	ls(int cs, char *buf);
-void	pwd(int cs, char *buf);
+void	pwd(int cs, char *buf, char *home);
 void	cd(int cs, char *buf, char *home);
 
 /*

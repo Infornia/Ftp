@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/24 17:46:01 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/24 18:35:36 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	do_something(t_data *d, char **e)
 		if (!ft_strncmp(d->buf, "ls", 2))
 			ls(d->cs, d->buf);
 		else if (!ft_strcmp(d->buf, "pwd"))
-			pwd(d->cs, d->buf);
+			pwd(d->cs, d->buf, d->home);
 		else if (!ft_strncmp(d->buf, "cd", 2))
 			cd(d->cs, d->buf, d->home);
 		else if (!ft_strncmp(d->buf, "get", 3))
