@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/23 17:05:24 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/24 13:09:01 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,12 @@ int		create_client(char *addr, int port)
 	return (sock);
 }
 
-int		main(int ac, char **av, char **e)
+int		main(int ac, char **av)
 {
 	int		port;
 	int		sock;
+	int		r;
+	char	buff[1024];
 
 	if (ac != 3)
 		usage(av[0]);
@@ -60,12 +62,12 @@ int		main(int ac, char **av, char **e)
 	while (22)
 	{
 		write(1, "\033[33m (>^.^)> Client <(^.^<) -> \033[0m", 42);
-		r = read(0, buf, 1023);
-		buf[r - 1] = 0;
-		write(sock, buf, r);
-		quit_client(buf);
-		recep(sock);
+		r = read(0, buff, 1023);
+		buff[r - 1] = 0;
+		write(sock, buff, r);
+		quit_client(buff);
+		//recep(sock);
 	}
-	close(d.sock);
+	close(sock);
 	return (0);
 }
