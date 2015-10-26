@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/26 14:09:48 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/26 14:17:10 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int		create_server(int port)
 	sin.sin_addr.s_addr = htonl(INADDR_ANY);
 	if (bind(sock, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
 	{
-		ft_putstr("\033[31mError: Bind Problem,
-				Try another port please\033[0m\n");
+		ft_putstr("\033[31mError: Bind Problem,Try another port please\033[0m\n");
 		exit(0);
 	}
 	listen(sock, 22);
