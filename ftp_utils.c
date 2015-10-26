@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/21 20:52:48 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/24 15:53:54 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/26 13:06:18 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 void	put_error(int cs, int error_type)
 {
 	if (error_type == NOT_FOUND)
-		send(cs, "Not found\n", 12, MSG_OOB);
+		send(cs, "\033[31Not found\n\033[0m", 22, MSG_OOB);
 }
 
 void	quit(int cs, int ss)
 {
-	send(cs, "\033[32mSUCCESS\033[0m\n", 19, MSG_OOB);
+	send(cs, "\033[32mSUCCESS: Quit\033[0m\n", 25, MSG_OOB);
 	close(ss);
 	exit(0);
 }

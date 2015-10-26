@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/21 20:35:37 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/26 12:45:13 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/26 13:25:01 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ls(int cs, char *buf)
 	pid = fork();
 	if (pid == 0)
 	{
-		write(cs, "\033[32mSUCCESS: Ls\n\033[0m", 23);
+		write(cs, "\033[32mSUCCESS: Ls\n\033[0m", 25);
 		dup2(cs, 1);
 		dup2(cs, 2);
 		t = ft_strsplit(buf, ' ');
@@ -74,17 +74,15 @@ void	cd_helper(int cs, char *home, char *folder)
 	else
 	{
 		put_error(cs, NOT_FOUND);
-		chdir(cwd);
+		chdir(home);
 	}
-	cwd = getcwd(buff, 2048);
 	if (ft_strcmp(home, cwd) < 0)
-		send(cs, "\033[32mSUCCESS: Cd\nNew directory Bro\n\033[0m", 44, MSG_OOB);
-	else if (ft_strcmp(home, cwd) == 0)
-		send(cs, "\033[32mSUCCESS: Cd\nYou're at home now\n\033[0m", 45, MSG_OOB);
+		send(cs, "\033[32mSUCCESS: Cd\nChange directory\n\033[0m", 43, MSG_OOB);
 	else
 	{
 		send(cs, "\033[32mSUCCESS: Cd\n\033[0m", 25, MSG_OOB);
-		send(cs, "\033[31mHaha no you can't leave your home (back to home) \n\033[0m", 63, MSG_OOB);
+		send(cs, "\033[31mHaha no you can't leave your home\n
+				(Back to home) \n\033[0m", 63, MSG_OOB);
 		chdir(home);
 	}
 }
@@ -104,7 +102,8 @@ void	cd(int cs, char *buf, char *home)
 	else if (!cmp && !t[1])
 	{
 		chdir(home);
-		send(cs, "\033[32mSUCCESS: Cd\nBack to Home my Friend !\n\033[0m", 51, MSG_OOB);
+		send(cs, "\033[32mSUCCESS: Cd\n
+				Back to Home my Friend !\n\033[0m", 51, MSG_OOB);
 	}
 	else if (!cmp && t[1])
 		cd_helper(cs, home, t[1]);

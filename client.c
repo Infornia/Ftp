@@ -6,13 +6,13 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/24 17:52:11 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/26 13:22:16 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-void	usage(char *s)
+void		usage(char *s)
 {
 	printf("Usage: %s <addr> <port>\n", s);
 	exit(-1);
@@ -28,7 +28,7 @@ static void	quit_client(int sock, char *buf)
 	}
 }
 
-void	recep(int sock)
+void		recep(int sock)
 {
 	int		r;
 	char	buff[2048];
@@ -47,7 +47,7 @@ void	recep(int sock)
 	}
 }
 
-int		create_client(char *addr, int port)
+int			create_client(char *addr, int port)
 {
 	int					sock;
 	struct protoent		*proto;
@@ -62,13 +62,13 @@ int		create_client(char *addr, int port)
 	sin.sin_addr.s_addr = inet_addr(addr);
 	if (connect(sock, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
 	{
-		ft_putstr("\033[31mError: Connect Problem, Try another port please\033[0m\n");
+		ft_putstr("\033[31mError: Failed to Connect\033[0m\n");
 		exit(0);
 	}
 	return (sock);
 }
 
-int		main(int ac, char **av)
+int			main(int ac, char **av)
 {
 	int		port;
 	int		sock;
@@ -81,7 +81,7 @@ int		main(int ac, char **av)
 	sock = create_client(av[1], port);
 	while (22)
 	{
-		write(1, "\033[33m (>^.^)> Client <(^.^<) -> \033[0m", 37);
+		write(1, "\033[33m (>^.^)> Client <(^.^<) -> \033[0m", 36);
 		r = read(0, buff, 1023);
 		buff[r - 1] = 0;
 		write(sock, buff, r);
