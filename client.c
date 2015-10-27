@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/26 20:07:17 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/27 19:04:30 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,40 +28,49 @@ static void	quit_client(int sock, char *buf)
 	}
 }
 
-/*static void	create_file(char *s)
+static void	create_file(int sock, char *s)
 {
-	int fd;
+	int		fd;
+	int		r;
+	char	buff[1024];
 
 	ft_putendl("Hello get file");
 	if (!s)
 		return ;
-	if ((fd = open("abc", O_WRONLY | O_CREAT) < 0))
+	if ((fd = open("abc", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR)) < 0)
 	{
 		ft_putendl("Failed to open");
 		return ;
 	}
-	ft_putnbr(fd);
-	write(fd, s, ft_strlen(s));
+	while ((r = recv(sock, buff, sizeof(buff), 0)) > 0)
+	{
+		if (ft_strchr(buff, *END_GET))
+		{
+			write(fd, buff, r - 1);
+			break ;
+		}
+		else
+			write(fd, buff, r);
+	}
+	ft_putendl("The End");
 	close(fd);
-}*/
+}
 
 void		recep(int sock)
 {
 	int		r;
-	char		*get;
-	char	buff[2048];
+	char	buff[1024];
 
-	get = 0;
 	while ((r = recv(sock, buff, sizeof(buff), 0)) > 0)
 	{
 		buff[r] = 0;
 		if (ft_strequ(buff, END))
 			return ;
 		write(1, buff, r);
-		if ((get = ft_strchr(buff, *GET)))
+		if (ft_strchr(buff, *GET))
 		{
-			ft_putstr("Hello get\n");
-//			create_file(get + 1);
+			create_file(sock, buff);
+			break ;
 		}
 	}
 	if (r == -1)

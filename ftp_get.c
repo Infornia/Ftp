@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/23 12:15:27 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/26 18:37:11 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/27 18:48:18 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ static void	get_file(int cs, char *file)
 		return ;
 	}
 	send(cs, "\033[32mOk your file exist, i'm reading it\n\033[0m", 45, MSG_OOB);
-	send(cs, GET, 2, MSG_OOB);
+	send(cs, GET, sizeof(GET), MSG_OOB);
+	send(cs, file, sizeof(file), MSG_OOB);
 	while ((r = read(fd, buf, 1023)) > 0)
 	{
 		buf[r] = 0;
 		send(cs, buf, r + 1, MSG_OOB);
 	}
-	send(cs, END_GET, 2, MSG_OOB);
+	send(cs, END_GET, sizeof(END_GET), MSG_OOB);
 	close(fd);
 }
 
