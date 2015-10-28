@@ -6,17 +6,29 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/23 12:15:27 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/27 18:48:18 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/28 18:49:11 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
+static char		*prepare_dl(char *file)
+{
+	char	*line;
+
+	line = malloc(sizeof(char) * 1025)
+	ft_bzero(&line);
+	line = ft_strcat(line, "get ");
+	line = ft_strcat(line, file);
+	line = ft_strcat(line, " ");
+	return (line);
+}
+
 static void	get_file(int cs, char *file)
 {
 	int		fd;
-	char	buf[1024];
-	int		r;
+	char	*to_send;
+	char	*tmp;
 
 	if ((fd = open(file, O_RDONLY)) < 0)
 	{
@@ -25,14 +37,11 @@ static void	get_file(int cs, char *file)
 		return ;
 	}
 	send(cs, "\033[32mOk your file exist, i'm reading it\n\033[0m", 45, MSG_OOB);
-	send(cs, GET, sizeof(GET), MSG_OOB);
-	send(cs, file, sizeof(file), MSG_OOB);
-	while ((r = read(fd, buf, 1023)) > 0)
-	{
-		buf[r] = 0;
-		send(cs, buf, r + 1, MSG_OOB);
-	}
-	send(cs, END_GET, sizeof(END_GET), MSG_OOB);
+	to_send = prepare_dl(file);
+	while (get_next_line(fd, &tmp) > 0)
+		to_send = ft_strjoin(to_send, tmp);
+	send(cs, to_send, ft_strlen(to_send) + 1, MSG_OOB);
+	free(to_send);
 	close(fd);
 }
 

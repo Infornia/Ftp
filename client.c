@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/27 19:04:30 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/28 18:49:13 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,50 +28,48 @@ static void	quit_client(int sock, char *buf)
 	}
 }
 
-static void	create_file(int sock, char *s)
+static void	create_file(char *buff, int get)
 {
-	int		fd;
-	int		r;
-	char	buff[1024];
+	char	**tmp;
+	char	bouffeur[1024];
+	int		start;
 
-	ft_putendl("Hello get file");
-	if (!s)
-		return ;
-	if ((fd = open("abc", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR)) < 0)
+	if (get == 1)
 	{
-		ft_putendl("Failed to open");
-		return ;
-	}
-	while ((r = recv(sock, buff, sizeof(buff), 0)) > 0)
-	{
-		if (ft_strchr(buff, *END_GET))
+		tmp = ft_strsplit(buff, ' ');
+		if ((fd = open("Download/abc", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | O_TRUNC)) < 0)
 		{
-			write(fd, buff, r - 1);
-			break ;
+			ft_putendl("Failed to open");
+			return (-1);
 		}
-		else
-			write(fd, buff, r);
+		start = ft_strlen(tmp[1]) + 4;
+		write(fd, buff + start, ft_strlen(buff) - start);
 	}
-	ft_putendl("The End");
+	else if (get == 2)
+		write(fd, bouffeur, sizeof(bouffeur));
 	close(fd);
 }
+
 
 void		recep(int sock)
 {
 	int		r;
+	int		get;
 	char	buff[1024];
 
-	while ((r = recv(sock, buff, sizeof(buff), 0)) > 0)
+	get = 0;
+	while ((r = recv(sock, buff, sizeof(buff) - 1, 0)) > 0)
 	{
 		buff[r] = 0;
+		if (!ft_strncmp(buff, "get ", 4) || get == 2)
+		{
+			get = 2;
+			create_file(buff, get, fd);
+		}
 		if (ft_strequ(buff, END))
 			return ;
+		printf("The R %i\n", r);
 		write(1, buff, r);
-		if (ft_strchr(buff, *GET))
-		{
-			create_file(sock, buff);
-			break ;
-		}
 	}
 	if (r == -1)
 	{
@@ -117,7 +115,7 @@ int			main(int ac, char **av)
 		ft_putstr("\033[33m (>^.^)> Client <(^.^<) -> \033[0m");
 		r = read(0, buff, 1023);
 		buff[r - 1] = 0;
-		write(sock, buff, r);
+		send(sock, buff, r + 1, MSG_OOB);
 		recep(sock);
 		quit_client(sock, buff);
 	}
