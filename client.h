@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/28 15:23:21 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/30 20:38:53 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 
 # define NOT_FOUND 1
 # define END "\005"
+# define GET "\002"
+# define GET_END "\003"
 
 typedef struct	s_data
 {

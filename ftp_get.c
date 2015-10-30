@@ -6,29 +6,17 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/23 12:15:27 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/28 18:49:11 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/30 20:34:21 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-static char		*prepare_dl(char *file)
-{
-	char	*line;
-
-	line = malloc(sizeof(char) * 1025)
-	ft_bzero(&line);
-	line = ft_strcat(line, "get ");
-	line = ft_strcat(line, file);
-	line = ft_strcat(line, " ");
-	return (line);
-}
-
 static void	get_file(int cs, char *file)
 {
 	int		fd;
-	char	*to_send;
-	char	*tmp;
+	int		r;
+	char	buff[1024];
 
 	if ((fd = open(file, O_RDONLY)) < 0)
 	{
@@ -36,12 +24,14 @@ static void	get_file(int cs, char *file)
 		close(fd);
 		return ;
 	}
-	send(cs, "\033[32mOk your file exist, i'm reading it\n\033[0m", 45, MSG_OOB);
-	to_send = prepare_dl(file);
-	while (get_next_line(fd, &tmp) > 0)
-		to_send = ft_strjoin(to_send, tmp);
-	send(cs, to_send, ft_strlen(to_send) + 1, MSG_OOB);
-	free(to_send);
+	send(cs, "\033[32m\006SUCCESS: Get\n\033[0m", 24, MSG_OOB);
+	send(cs, GET, 2, MSG_OOB);
+	while ((r = read(fd, buff, 1023)) > 0)
+	{
+		buff[r] = 0;
+		send(cs, buff,  r + 1, MSG_OOB);
+	}
+	send(cs, END_GET, 2, MSG_OOB);
 	close(fd);
 }
 

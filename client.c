@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/28 18:49:13 by mwilk            ###   ########.fr       */
+/*   Updated: 2015/10/30 22:18:48 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,34 @@ static void	quit_client(int sock, char *buf)
 	}
 }
 
-static void	create_file(char *buff, int get)
+static void	create_file(char *buff, int r, int sock)
 {
-	char	**tmp;
-	char	bouffeur[1024];
-	int		start;
+	int		fd;
+	char	*begin;
 
-	if (get == 1)
+	begin = ft_strchr(buff, *GET) + 1;
+	printf("The FIRST r into the create %i\n The stockage: %s\n", r, buff);
+	if (begin && !(*begin))
 	{
-		tmp = ft_strsplit(buff, ' ');
-		if ((fd = open("Download/abc", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | O_TRUNC)) < 0)
-		{
-			ft_putendl("Failed to open");
-			return (-1);
-		}
-		start = ft_strlen(tmp[1]) + 4;
-		write(fd, buff + start, ft_strlen(buff) - start);
+		printf("Char alone");
+		r = recv(sock, buff, sizeof(buff) - 1, 0);
+		write(fd, buff, r);
 	}
-	else if (get == 2)
-		write(fd, bouffeur, sizeof(bouffeur));
+	else if (begin && *begin)
+	{
+		write(fd, begin, r);
+		printf("string to put: %s\n", begin);
+	}
+	if ((fd = open("Download/abc", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | O_TRUNC)) < 0)
+	{
+		ft_putendl("Failed to open");
+		return ;
+	}
+	if (buff[0] == *GET && r > 2)
+		write(fd, buff + 1, ft_strlen(buff) - 2);
+	r = recv(sock, buff, sizeof(buff) - 1, 0);
+	buff[r] = 0;
+	printf("The SECOND r into the create %i\n The stockage: %s\n", r, buff);
 	close(fd);
 }
 
@@ -54,21 +63,19 @@ static void	create_file(char *buff, int get)
 void		recep(int sock)
 {
 	int		r;
-	int		get;
 	char	buff[1024];
 
-	get = 0;
 	while ((r = recv(sock, buff, sizeof(buff) - 1, 0)) > 0)
 	{
 		buff[r] = 0;
-		if (!ft_strncmp(buff, "get ", 4) || get == 2)
-		{
-			get = 2;
-			create_file(buff, get, fd);
-		}
 		if (ft_strequ(buff, END))
 			return ;
-		printf("The R %i\n", r);
+		if (ft_strchr(buff, *GET))
+		{
+			create_file(buff, r, sock);
+			return ;
+		}
+		printf("The r %i\n", r);
 		write(1, buff, r);
 	}
 	if (r == -1)
