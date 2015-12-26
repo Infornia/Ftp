@@ -20,7 +20,6 @@ void	put_error(int cs, int error_type)
 
 void	quit(int cs, int ss)
 {
+	(void)ss;
 	send(cs, "\033[32mSUCCESS: Quit\033[0m\n", 24, MSG_OOB);
-	close(ss);
-	exit(0);
 }

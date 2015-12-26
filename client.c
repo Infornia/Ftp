@@ -20,9 +20,9 @@ void		usage(char *s)
 
 static void	quit_client(int sock, char *buf)
 {
-	if (!ft_strncmp(buf, "quit", 4))
+	if (!ft_strcmp(buf, "quit"))
 	{
-		printf("\033[32mGood bye !\033[0m");
+		printf("\033[32mGood bye !\n\033[0m");
 		close(sock);
 		exit(0);
 	}
