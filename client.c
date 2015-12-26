@@ -20,45 +20,13 @@ void		usage(char *s)
 
 static void	quit_client(int sock, char *buf)
 {
-	if (!ft_strcmp(buf, "quit"))
+	if (!ft_strncmp(buf, "quit", 4))
 	{
 		printf("\033[32mGood bye !\033[0m");
 		close(sock);
 		exit(0);
 	}
 }
-
-static void	create_file(char *buff, int r, int sock)
-{
-	int		fd;
-	char	*begin;
-
-	begin = ft_strchr(buff, *GET) + 1;
-	printf("The FIRST r into the create %i\n The stockage: %s\n", r, buff);
-	if (begin && !(*begin))
-	{
-		printf("Char alone");
-		r = recv(sock, buff, sizeof(buff) - 1, 0);
-		write(fd, buff, r);
-	}
-	else if (begin && *begin)
-	{
-		write(fd, begin, r);
-		printf("string to put: %s\n", begin);
-	}
-	if ((fd = open("Download/abc", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | O_TRUNC)) < 0)
-	{
-		ft_putendl("Failed to open");
-		return ;
-	}
-	if (buff[0] == *GET && r > 2)
-		write(fd, buff + 1, ft_strlen(buff) - 2);
-	r = recv(sock, buff, sizeof(buff) - 1, 0);
-	buff[r] = 0;
-	printf("The SECOND r into the create %i\n The stockage: %s\n", r, buff);
-	close(fd);
-}
-
 
 void		recep(int sock)
 {
@@ -70,11 +38,6 @@ void		recep(int sock)
 		buff[r] = 0;
 		if (ft_strequ(buff, END))
 			return ;
-		if (ft_strchr(buff, *GET))
-		{
-			create_file(buff, r, sock);
-			return ;
-		}
 		printf("The r %i\n", r);
 		write(1, buff, r);
 	}

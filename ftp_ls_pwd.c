@@ -28,7 +28,7 @@ void	ls(int cs, char *buf)
 		if (!ft_strncmp(t[0], "ls", 2))
 		{
 			execv("/bin/ls", &t[0]);
-			ft_puts("Fail of execv Bro");
+			ft_putendl("Fail of execv Bro");
 		}
 		else
 			put_error(cs, NOT_FOUND);
