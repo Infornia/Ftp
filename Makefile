@@ -5,65 +5,87 @@
 #                                                     +:+ +:+         +:+      #
 #    By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2015/09/29 18:08:50 by mwilk             #+#    #+#              #
-#    Updated: 2015/10/24 13:06:26 by mwilk            ###   ########.fr        #
+#    Created: 2014/11/09 16:17:56 by mwilk             #+#    #+#              #
+#    Updated: 2016/02/21 02:02:57 by mwilk            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-NAME		= serveur
-NAME2		= client
+## PROJECT
 
-OBJ_PATH	= ./obj/
-SRC_PATH	= ./
+NAME = serveur
+NAME2 = client
 
-OBJ			= $(FILES:.c=.o)
-OBJ2		= $(FILES2:.c=.o)
+LIBFT = libft
 
-FILES		= server.c ftp_ls_pwd.c ftp_utils.c ftp_get.c
-FILES2		= client.c
+## COMPILATEUR
 
-OBJS		= $(addprefix $(OJB_PATH),$(OBJ))
-OBJS2		= $(addprefix $(OJB_PATH),$(OBJ2))
+OS = $(shell uname -s)
+CC = clang
+FLAGS = -Wall -Wextra -Werror
 
-SRCS		= $(addprefix $(SRC_PATH),$(FILES))
-SRCS2		= $(addprefix $(SRC_PATH),$(FILES2))
+## FILES
 
-LIB_H		= -I Libft/includes/
-LIB_L		= -LLibft -lft
+SRC =   server.c\
+	    ftp_ls_pwd.c\
+	    ftp_utils.c\
+	    ftp_get.c\
+	    ftp_recv.c\
+	    ftp_send.c\
 
-CFLAGS		= -Wall -Wextra -Werror
+SRC2 =  client.c\
+	    ftp_recv.c\
+	    ftp_send.c\
 
-all: serveur client
+INC =  -I ./
+INC += -I ./libft/includes/
 
-serveur: $(NAME)
+OBJ = $(SRC:.c=.o)
+OBJ2 = $(SRC2:.c=.o)
 
-client: $(NAME2)
+LIB =  -L libft -lft
 
-$(NAME):
-	@gcc $(CFLAGS) $(LIB_H) -c $(SRCS) 
-	@mkdir $(OBJ_PATH)
-	@gcc -o $(NAME) $(OBJ) $(LIB_L)
-	@mv $(OBJ) $(OBJ_PATH)
-	@echo "\033[35m <(O.O<) WOW ! Very Fdf ! Amaze ! (>^o^)> \033[0m"
+## RULES
 
-$(NAME2):
-	@gcc $(CFLAGS) $(LIB_H) -c $(SRCS2) 
-	@mkdir -p $(OBJ_PATH)
-	@gcc -o $(NAME2) $(OBJ2) $(LIB_L)
-	@mv $(OBJ2) $(OBJ_PATH)
-	@echo "\033[35m <(O.O<) WOW ! Very Fdf ! Amaze ! (>^o^)> \033[0m"
+all: ml $(NAME) $(NAME2)
 
+update:
+	git pull
+	git submodule update --init --recursive
+	git submodule foreach git pull origin master
 
-clean:
-	@/bin/rm -rf $(OBJ_PATH)
-	@echo "\033[36mT.T Miss you object files T.T \033[0m"
+$(NAME): $(OBJ)
+	@$(CC) $(FLAGS) $(INC) $(LIB) -o $(NAME) $(SRC)
+	@echo "\033[35m <(O.O<) WOW ! Very $(NAME) ! Amaze ! (>^o^)> \033[0m"
 
-fclean: clean
-	@/bin/rm -rf $(NAME)
-	@/bin/rm -rf $(NAME2)
-	@echo "\033[36m X.x Bye Bye compiled files >_< \033[0m"
+$(NAME2): $(OBJ2)
+	@$(CC) $(FLAGS) $(INC) $(LIB) -o $(NAME2) $(SRC2)
+	@echo "\033[35m <(O.O<) WOW ! Very $(NAME2) ! Amaze ! (>^o^)> \033[0m"
+
+clean: mcl
+	rm -rf $(OBJ)
+	@echo "\033[36mT.T Miss you $(NAME)-object files T.T \033[0m"
+
+fclean: mfl
+	rm -rf $(OBJ)
+	@echo "\033[36mT.T Miss you $(NAME)-object files T.T \033[0m"
+	rm -rf $(NAME)
+	@echo "\033[36m X.x Bye Bye $(NAME)-compiled files >_< \033[0m"
+
+%.o:%.c
+	@echo "<(O.o)>\t\t$@\t\t<(o.O)>"
+	@$(CC) $(FLAGS) $(INC) -c $< -o $@
+
+ml:
+		make -C libft
+
+mcl:
+		make -C libft clean
+
+mfl:
+		make -C libft fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all normal clean fclean re makelib ml mcl mfl
+

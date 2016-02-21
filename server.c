@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/28 12:11:42 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/02/21 02:19:02 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,61 +43,54 @@ int		create_server(int port)
 void	do_something(t_data *d, char **e)
 {
 	(void)e;
-	while (22)
-	{
-		d->r = read(d->cs, d->buf, 1023);
-		d->buf[d->r - 1] = '\0';
-		write(1, d->buf, d->r);
-		write(1, "\n", 1);
-		if (!ft_strncmp(d->buf, "ls", 2))
-			ls(d->cs, d->buf);
-		else if (!ft_strcmp(d->buf, "pwd"))
-			pwd(d->cs, d->buf, d->home);
-		else if (!ft_strncmp(d->buf, "cd", 2))
-			cd(d->cs, d->buf, d->home);
-		else if (!ft_strncmp(d->buf, "get", 3))
-			get(d->cs, d->buf);
-		else if (!ft_strcmp(d->buf, "quit"))
-			quit(d->cs, d->sock);
-		else
-			put_error(d->cs, NOT_FOUND);
-		send(d->cs, END, 2, 0);
-	}
+	if (ft_strnstr(d->buf, "ls", 2))
+		ls(d->cs, d->buf);
+	else if (ft_strnstr(d->buf, "pwd", 3))
+		pwd(d->cs, d->buf, d->home);
+	else if (ft_strnstr(d->buf, "cd", 2))
+		cd(d->cs, d->buf, d->home);
+	else if (ft_strnstr(d->buf, "get", 3))
+		get(d->cs, d->buf);
+	else if (ft_strnstr(d->buf, "quit", 4))
+		quit(d->cs, d->sock);
+	else
+		put_error(d->cs, NOT_FOUND);
+	ft_bzero(d->buf, ft_strlen(d->buf));
 }
 
-void	fork_this(t_data *d, char **e, int sock)
+static t_data		*init(t_data *d, char *port)
 {
-	int		pid;
-	int		status;
+	char					b[2048];
 
-	if ((d->cs = accept(sock, (struct sockaddr*)&d->csin, &d->cslen)) >= 0)
-	{
-		pid = fork();
-		if (pid == 0)
-			do_something(d, e);
-		else if (pid > 0)
-			wait(&status);
-		else
-		{
-			printf("\033[31mERROR Fork\033[0m");
-			exit(0);
-		}
-	}
+	d = (t_data *)malloc(sizeof(t_data));
+	d->port = ft_atoi(port);
+	d->sock = create_server(d->port);
+	d->home = getcwd(b, 2048);
+	return (d);
 }
 
 int		main(int ac, char **av, char **e)
 {
-	t_data					d;
-	int						port;
-	char					b[2048];
+	t_data					*d;
+	pid_t					pid;
 
 	if (ac != 2)
 		usage(av[0]);
-	port = ft_atoi(av[1]);
-	d.sock = create_server(port);
-	d.home = getcwd(b, 2048);
-	fork_this(&d, e, d.sock);
-	close(d.cs);
-	close(d.sock);
+	d = NULL;
+	d = init(d, av[1]);
+	while (22)
+	{
+		d->cs = accept(d->sock, (struct sockaddr*)&d->csin, &d->cslen);
+		if (!(pid = fork()))
+		{
+			ft_puts("Client connected");
+			while ((d->ret = tt_recv(d->cs, &d->buf)) > 0)
+			{
+				do_something(d, e);
+				ft_strdel(&d->buf);
+			}
+		}
+	}
+	close(d->sock);
 	return (0);
 }

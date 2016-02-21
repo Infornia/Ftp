@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/30 20:38:53 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/02/21 02:01:12 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@
 # include <netinet/in.h>
 # include <arpa/inet.h>
 # include <sys/socket.h>
-# include "Libft/includes/libft.h"
+# include "libft.h"
 
 /*
 **defines
 */
 
 # define NOT_FOUND 1
+# define SIZE_BLOCK 8
 # define END "\005"
 # define GET "\002"
 # define GET_END "\003"
@@ -41,10 +42,11 @@ typedef struct	s_data
 {
 	int					sock;
 	int					cs;
+	size_t				ret;
 	unsigned int		cslen;
 	struct sockaddr_in	csin;
 	int					r;
-	char				buf[1024];
+	char				*buf;
 	char				*home;
 
 	int					run;
@@ -70,5 +72,17 @@ void			quit(t_data *d, int cs);
 */
 
 void			get(int cs, char *buf);
+
+/*
+**ftp_recv.c
+*/
+
+size_t			tt_recv(int sock, char **s);
+
+/*
+**ftp_recv.c
+*/
+
+size_t			tt_send(int sock, int fd, char *s, size_t size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/30 20:39:04 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/02/21 02:16:49 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 */
 
 # define NOT_FOUND 1
+# define SIZE_BLOCK 8
 # define END "\005"
 # define GET "\002"
 # define END_GET "\003"
@@ -39,11 +40,13 @@
 typedef struct	s_data
 {
 	int						sock;
+	int						port;
 	int						cs;
+	size_t					ret;
 	unsigned int			cslen;
 	struct sockaddr_in		csin;
 	int						r;
-	char					buf[1024];
+	char					*buf;
 	char					*home;
 }				t_data;
 
@@ -67,5 +70,17 @@ void			quit(int cs, int ss);
 */
 
 void			get(int cs, char *buf);
+
+/*
+**ftp_recv.c
+*/
+
+size_t			tt_recv(int sock, char **s);
+
+/*
+**ftp_recv.c
+*/
+
+void			tt_send(int sock, int fd, char *s, size_t size);
 
 #endif
