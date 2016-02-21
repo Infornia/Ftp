@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/30 22:18:48 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/02/21 18:42:54 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,6 @@ void		usage(char *s)
 {
 	printf("Usage: %s <addr> <port>\n", s);
 	exit(-1);
-}
-
-static void	quit_client(int sock, char *buf)
-{
-	if (!ft_strcmp(buf, "quit"))
-	{
-		printf("\033[32mGood bye !\n\033[0m");
-		close(sock);
-		exit(0);
-	}
-}
-
-void		recep(int sock)
-{
-	int		r;
-	char	buff[1024];
-
-	while ((r = recv(sock, buff, sizeof(buff) - 1, 0)) > 0)
-	{
-		buff[r] = 0;
-		if (ft_strequ(buff, END))
-			return ;
-		printf("The r %i\n", r);
-		write(1, buff, r);
-	}
-	if (r == -1)
-	{
-		printf("\033[31mERROR: Recep problem\n\033[0m");
-		exit(2);
-	}
 }
 
 int			create_client(char *addr, int port)
@@ -69,26 +39,40 @@ int			create_client(char *addr, int port)
 	return (sock);
 }
 
+static void		recep(int sock, char *buff, char *line)
+{
+	int		r;
+
+	(void)buff;
+	while ((r = read(0, line, 2048)) > 0)
+	{
+		line[r] = 0;
+		tt_send(sock, 0, line, ft_strlen(line));
+		if (ft_strnstr(line, "quit", 4))
+			break ;
+//		ft_strdel(&line);
+		ft_bzero(line, 2048);
+		ft_putstr("\033[33m (>^.^)> Client <(^.^<) -> \033[0m");
+	}
+}
+
 int			main(int ac, char **av)
 {
 	int		port;
 	int		sock;
-	int		r;
-	char	buff[1024];
+	char	*buff;
+	char	*line;
 
 	if (ac != 3)
 		usage(av[0]);
 	port = ft_atoi(av[2]);
 	sock = create_client(av[1], port);
-	while (22)
-	{
-		ft_putstr("\033[33m (>^.^)> Client <(^.^<) -> \033[0m");
-		r = read(0, buff, 1023);
-		buff[r - 1] = 0;
-		send(sock, buff, r + 1, MSG_OOB);
-		recep(sock);
-		quit_client(sock, buff);
-	}
+	buff = NULL;
+	line = (char *)malloc(sizeof(char) * 2048);
+	ft_putstr("\033[33m (>^.^)> Client <(^.^<) -> \033[0m");
+	recep(sock, buff, line);
+	printf("\033[32mGood bye !\n\033[0m");
 	close(sock);
+	free(line);
 	return (0);
 }

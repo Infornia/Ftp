@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/21 02:19:02 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/02/21 18:46:55 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int		main(int ac, char **av, char **e)
 			ft_puts("Client connected");
 			while ((d->ret = tt_recv(d->cs, &d->buf)) > 0)
 			{
+				ft_puts(d->buf);
 				do_something(d, e);
 				ft_strdel(&d->buf);
 			}
