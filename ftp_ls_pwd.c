@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/21 20:35:37 by mwilk             #+#    #+#             */
-/*   Updated: 2015/10/26 18:00:24 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/02/21 20:24:10 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,19 @@ void	ls(int cs, char *buf)
 
 void	pwd(int cs, char *buf, char *home)
 {
-	char	**t;
-	size_t	cmp;
-	char	buff[2048];
-	char	*cwd;
-	int		move;
+	char	*buff;
 
-	move = ft_strlen(home);
-	t = ft_strsplit(buf, ' ');
-	cmp = ft_strncmp(t[0], "pwd", 3);
-	if (cmp || (!cmp && t[1]))
+	(void)buf;
+	(void)home;
+	buff = malloc(2048);
+	if ((buff = getcwd(buff, 2048)))
 	{
-		put_error(cs, NOT_FOUND);
-		return ;
+		tt_send(cs, 0, buff, ft_strlen(buff));
+		tt_send(cs, 0, "\033[32mSUCCESS: Cd\nChange directory\n\033[0m", 39);
 	}
-	send(cs, "\033[32mSUCCESS: Pwd\n\033[0m", 23, MSG_OOB);
-	cwd = getcwd(buff, 2048) + move - 4;
-	send(cs, cwd, ft_strlen(cwd) + 1, MSG_OOB);
-	send(cs, "\n", 2, MSG_OOB);
+	else
+		tt_send(cs, 0, "\033[31mERROR: Pwd\n\033[0m", 20);
+	free(buff);
 }
 
 void	cd_helper(int cs, char *home, char *folder)

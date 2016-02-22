@@ -6,17 +6,17 @@
 /*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/13 14:26:26 by mwilk             #+#    #+#             */
-/*   Updated: 2015/02/04 19:30:32 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/02/21 20:46:19 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void    pnbl(const char *s)
+void	pnbl(const char *s)
 {
-    int print;
-    
-    print = ft_strlen(s);
-    pnbr(print);
-    pel("");
+	int print;
+
+	print = ft_strlen(s);
+	pnbr(print);
+	pel("");
 }

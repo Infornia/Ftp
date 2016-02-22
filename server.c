@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/21 18:46:55 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/02/21 20:46:43 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	do_something(t_data *d, char **e)
 	else if (ft_strnstr(d->buf, "quit", 4))
 		quit(d->cs, d->sock);
 	else
-		put_error(d->cs, NOT_FOUND);
+		tt_send(d->cs, 0, "ERROR: Command not found\n", 25);
 	ft_bzero(d->buf, ft_strlen(d->buf));
 }
 
@@ -86,6 +86,7 @@ int		main(int ac, char **av, char **e)
 			ft_puts("Client connected");
 			while ((d->ret = tt_recv(d->cs, &d->buf)) > 0)
 			{
+				pnbl(d->ret);
 				ft_puts(d->buf);
 				do_something(d, e);
 				ft_strdel(&d->buf);
