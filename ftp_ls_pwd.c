@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/21 20:35:37 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/21 20:24:10 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/02/23 07:52:51 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,15 @@ void	pwd(int cs, char *buf, char *home)
 
 	(void)buf;
 	(void)home;
+	ft_puts("reached pwd");
 	buff = malloc(2048);
 	if ((buff = getcwd(buff, 2048)))
 	{
+		ft_puts("send buff");
 		tt_send(cs, 0, buff, ft_strlen(buff));
+		ft_puts("send Success");
 		tt_send(cs, 0, "\033[32mSUCCESS: Cd\nChange directory\n\033[0m", 39);
+		ft_puts("GJ LOL");
 	}
 	else
 		tt_send(cs, 0, "\033[31mERROR: Pwd\n\033[0m", 20);

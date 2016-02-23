@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/21 20:46:43 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/02/23 07:46:41 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int		create_server(int port)
 void	do_something(t_data *d, char **e)
 {
 	(void)e;
+	ft_puts(d->buf);
 	if (ft_strnstr(d->buf, "ls", 2))
 		ls(d->cs, d->buf);
 	else if (ft_strnstr(d->buf, "pwd", 3))
@@ -66,6 +67,7 @@ static t_data		*init(t_data *d, char *port)
 	d->port = ft_atoi(port);
 	d->sock = create_server(d->port);
 	d->home = getcwd(b, 2048);
+	d->ret = 1;
 	return (d);
 }
 
@@ -86,8 +88,7 @@ int		main(int ac, char **av, char **e)
 			ft_puts("Client connected");
 			while ((d->ret = tt_recv(d->cs, &d->buf)) > 0)
 			{
-				pnbl(d->ret);
-				ft_puts(d->buf);
+				pnbr(d->ret);
 				do_something(d, e);
 				ft_strdel(&d->buf);
 			}
