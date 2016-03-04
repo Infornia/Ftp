@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/21 02:16:49 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/04 12:41:35 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct	s_data
 */
 
 void			ls(int cs, char *buf);
-void			pwd(int cs, char *buf, char *home);
+void			pwd(int cs, char *buf);
 void			cd(int cs, char *buf, char *home);
 
 /*
@@ -81,6 +81,6 @@ size_t			tt_recv(int sock, char **s);
 **ftp_recv.c
 */
 
-void			tt_send(int sock, int fd, char *s, size_t size);
+void			tt_send(int sock, char *s, size_t size, int fd);
 
 #endif

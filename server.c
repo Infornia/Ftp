@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/23 07:46:41 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/04 12:42:17 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	do_something(t_data *d, char **e)
 	if (ft_strnstr(d->buf, "ls", 2))
 		ls(d->cs, d->buf);
 	else if (ft_strnstr(d->buf, "pwd", 3))
-		pwd(d->cs, d->buf, d->home);
+		pwd(d->cs, d->buf);
 	else if (ft_strnstr(d->buf, "cd", 2))
 		cd(d->cs, d->buf, d->home);
 	else if (ft_strnstr(d->buf, "get", 3))
@@ -55,7 +55,7 @@ void	do_something(t_data *d, char **e)
 	else if (ft_strnstr(d->buf, "quit", 4))
 		quit(d->cs, d->sock);
 	else
-		tt_send(d->cs, 0, "ERROR: Command not found\n", 25);
+		tt_send(d->cs, "ERROR: Command not found\n", 25, 0);
 	ft_bzero(d->buf, ft_strlen(d->buf));
 }
 
@@ -88,7 +88,6 @@ int		main(int ac, char **av, char **e)
 			ft_puts("Client connected");
 			while ((d->ret = tt_recv(d->cs, &d->buf)) > 0)
 			{
-				pnbr(d->ret);
 				do_something(d, e);
 				ft_strdel(&d->buf);
 			}

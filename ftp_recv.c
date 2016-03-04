@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 00:21:36 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/23 07:53:46 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/04 13:11:37 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static	void		tt_send_acquittement(int sock)
 
 	data[0] = 4;
 	if ((send(sock, data, sizeof(data), 0)) < 0)
-		printf("Error: Failed transmission (recv)\n");
+		ft_puts("Error: Failed transmission (recv)\n");
 }
 
 static	void		recv_data(int sock, size_t size, char **s)
@@ -51,6 +51,7 @@ size_t				tt_recv(int sock, char **s)
 {
 	size_t		size;
 
+	ft_puts("Recv");
 	size = recv_size(sock);
 	tt_send_acquittement(sock);
 	recv_data(sock, size, s);

@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 16:16:54 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/21 02:01:12 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/04 13:20:25 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ size_t			tt_recv(int sock, char **s);
 **ftp_recv.c
 */
 
-size_t			tt_send(int sock, int fd, char *s, size_t size);
+size_t			tt_send(int sock, char *s, size_t size, int fd);
 
 #endif

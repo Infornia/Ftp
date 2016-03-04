@@ -6,7 +6,7 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/21 01:41:26 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/23 07:57:03 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/04 13:23:47 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void		send_size(int sock, size_t size)
 	data[2] = (size >> (1 * 8)) & 0xFF;
 	data[3] = (size >> (0 * 8)) & 0xFF;
 	if ((send(sock, data, sizeof(data), 0)) < 0)
-		printf("Error: failed transmission (send)\n");
+		ft_puts("Error: failed transmission (send)\n");
 }
 
 static int		acquittement(int sock)
@@ -30,7 +30,6 @@ static int		acquittement(int sock)
 	int				n;
 
 	n = recv(sock, data, sizeof(data), 0);
-	printf("RECV: le n:%i, le data:%c", n, data[0]);
 	if (n == sizeof(data) && data[0] == 4)
 		return (1);
 	return (0);
@@ -55,7 +54,7 @@ static void		send_data(int sock, int fd, char *s, size_t size)
 	}
 }
 
-void			tt_send(int sock, int fd, char *s, size_t size)
+void			tt_send(int sock, char *s, size_t size, int fd)
 {
 	send_size(sock, size);
 	if (acquittement(sock))
@@ -64,8 +63,8 @@ void			tt_send(int sock, int fd, char *s, size_t size)
 		if (acquittement(sock))
 			return ;
 		else
-			printf("Error: failed 2nd transmission\n");
+			ft_puts("Error: failed 2nd transmission (send)\n");
 	}
 	else
-			printf("Error: failed 1st transmission\n");
+		ft_puts("Error: failed 1st transmission (send)\n");
 }

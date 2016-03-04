@@ -6,7 +6,7 @@
 #    By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/09 16:17:56 by mwilk             #+#    #+#              #
-#    Updated: 2016/02/21 02:02:57 by mwilk            ###   ########.fr        #
+#    Updated: 2016/03/04 13:01:49 by mwilk            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,11 +62,11 @@ $(NAME2): $(OBJ2)
 	@$(CC) $(FLAGS) $(INC) $(LIB) -o $(NAME2) $(SRC2)
 	@echo "\033[35m <(O.O<) WOW ! Very $(NAME2) ! Amaze ! (>^o^)> \033[0m"
 
-clean: mcl
+clean:
 	rm -rf $(OBJ)
 	@echo "\033[36mT.T Miss you $(NAME)-object files T.T \033[0m"
 
-fclean: mfl
+fclean:
 	rm -rf $(OBJ)
 	@echo "\033[36mT.T Miss you $(NAME)-object files T.T \033[0m"
 	rm -rf $(NAME)

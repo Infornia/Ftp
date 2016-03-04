@@ -6,17 +6,11 @@
 /*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/10/20 13:52:18 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/21 18:42:54 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/04 13:30:16 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
-
-void		usage(char *s)
-{
-	printf("Usage: %s <addr> <port>\n", s);
-	exit(-1);
-}
 
 int			create_client(char *addr, int port)
 {
@@ -39,18 +33,36 @@ int			create_client(char *addr, int port)
 	return (sock);
 }
 
+static int		transmission(int sock, char *line, char **buff)
+{
+	int		m;
+
+	m = 1;
+	if ((ft_strnstr(line, "pwd", 3)))
+		tt_recv(sock, buff);
+	else
+		m = 0;
+	return (m);
+}
+
 static void		recep(int sock, char *buff, char *line)
 {
 	int		r;
+	int		t;
 
-	(void)buff;
 	while ((r = read(0, line, 2048)) > 0)
 	{
 		line[r] = 0;
-		tt_send(sock, 0, line, ft_strlen(line));
+		tt_send(sock, line, ft_strlen(line), 0);
 		if (ft_strnstr(line, "quit", 4))
 			break ;
-//		ft_strdel(&line);
+		t = transmission(sock, line, &buff);
+		if (!t)
+		{
+			tt_recv(sock, &buff);
+			ft_puts(buff);
+		}
+		ft_strdel(&buff);
 		ft_bzero(line, 2048);
 		ft_putstr("\033[33m (>^.^)> Client <(^.^<) -> \033[0m");
 	}
@@ -64,11 +76,15 @@ int			main(int ac, char **av)
 	char	*line;
 
 	if (ac != 3)
-		usage(av[0]);
+	{
+		printf("Usage: %s <addr> <port>\n", av[0]);
+		exit(-1);
+	}
 	port = ft_atoi(av[2]);
 	sock = create_client(av[1], port);
 	buff = NULL;
 	line = (char *)malloc(sizeof(char) * 2048);
+	ft_bzero(buff, ft_strlen(buff));
 	ft_putstr("\033[33m (>^.^)> Client <(^.^<) -> \033[0m");
 	recep(sock, buff, line);
 	printf("\033[32mGood bye !\n\033[0m");
