@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echange.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccholin <ccholin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/29 12:54:37 by ccholin           #+#    #+#             */
-/*   Updated: 2015/06/01 19:19:55 by ccholin          ###   ########.fr       */
+/*   Created: 2016/03/29 20:59:48 by mwilk             #+#    #+#             */
+/*   Updated: 2016/03/29 21:46:46 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,5 @@ void	ft_get(t_truck *uni, int sock)
 	}
 	else if ((i = ft_strcmp(uni->buff, "ok")) == 0)
 		ft_2get(uni, path, sock);
-	free (path);
+	free(path);
 }

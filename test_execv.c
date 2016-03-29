@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tt_pnbr.c                                          :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/29 21:48:25 by mwilk             #+#    #+#             */
-/*   Updated: 2016/03/29 21:48:27 by mwilk            ###   ########.fr       */
+/*   Created: 2015/10/22 14:13:11 by mwilk             #+#    #+#             */
+/*   Updated: 2015/10/26 14:09:21 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <unistd.h>
+#include <stdio.h>
 
-void	pnbr(int nb)
+int	main(void)
 {
-	ft_putstr(ft_itoa(nb));
+	char	*argv[] = {"ls", "-al", NULL};
+
+	execv("/bin/ls", argv);
+	perror("execv");
+	return (-1);
 }

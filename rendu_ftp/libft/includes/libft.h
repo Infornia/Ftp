@@ -6,7 +6,7 @@
 /*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/04 14:27:02 by mwilk             #+#    #+#             */
-/*   Updated: 2016/02/11 19:55:28 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/29 21:06:45 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int				ft_abs(int c);
 char			*ft_itoa(int c);
 void			ft_bzero(void *str, size_t n);
 void			*ft_realloc(void *ptr, size_t old, size_t size);
+int				ft_intlen(int nb);
 
 /*
 ** FT_IS

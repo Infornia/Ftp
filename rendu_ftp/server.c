@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccholin <ccholin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/04/27 21:07:32 by ccholin           #+#    #+#             */
-/*   Updated: 2015/06/01 20:13:12 by ccholin          ###   ########.fr       */
+/*   Created: 2016/03/29 21:02:20 by mwilk             #+#    #+#             */
+/*   Updated: 2016/03/29 21:45:58 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-void					usage(char *str)
+void					usage(char *s)
 {
-	ft_putstr("Usage: ");
-	ft_putstr(str);
-	ft_putstr("<port>\n");
+	printf("Usage: %s <port>", s);
 	exit(-1);
 }
 
@@ -35,7 +33,7 @@ int						create_server(int port)
 	sin.sin_addr.s_addr = htonl(INADDR_ANY);
 	if (bind(sock, (struct sockaddr *)&sin, sizeof(sin)) == -1)
 	{
-		ft_putstr("Bind error\n");
+		ft_putstr("\033[31mError: Bind, Try another port please\033[0m\n");
 		exit(2);
 	}
 	listen(sock, 42);
@@ -59,7 +57,7 @@ int						translate(t_bail *uni)
 	else if (ft_strnstr(uni->buf, "mkdir", 5) != NULL)
 		ft_mkdir(uni);
 	else
-		ft_send(uni->cs, 0, "ERROR mauvaise commande\n", 24);
+		ft_send(uni->cs, 0, "ERROR: Command not found\n", 25);
 	ft_bzero(uni->buf, ft_strlen(uni->buf));
 	return (1);
 }

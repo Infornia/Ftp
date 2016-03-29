@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   option.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccholin <ccholin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/15 18:15:55 by ccholin           #+#    #+#             */
-/*   Updated: 2015/06/01 22:00:34 by ccholin          ###   ########.fr       */
+/*   Created: 2016/03/29 21:02:11 by mwilk             #+#    #+#             */
+/*   Updated: 2016/03/29 21:31:30 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void					ft_cd(t_bail *uni)
 	free(pwd);
 }
 
-char					*make_ls(int cond, DIR *flux)
+static char				*make_ls(int cond, DIR *flux)
 {
 	struct dirent		*dir;
 	int					i;
@@ -108,7 +108,7 @@ char					*make_ls(int cond, DIR *flux)
 			rep = ft_strjoin(rep, "\n");
 		}
 	}
-	rep = ft_strjoin(rep, "SUCCES\n");
+	rep = ft_strjoin(rep, "SUCCESS\n");
 	return (rep);
 }
 

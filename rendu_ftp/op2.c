@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   op2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mwilk <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/04 13:48:44 by mwilk             #+#    #+#             */
-/*   Updated: 2016/03/04 13:48:45 by mwilk            ###   ########.fr       */
+/*   Created: 2016/03/29 21:02:00 by mwilk             #+#    #+#             */
+/*   Updated: 2016/03/29 21:47:08 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_2put(t_bail *uni, char *path, char *buff)
 	ft_recv(uni->cs, &buff);
 	write(uni->fd, buff, len);
 	close(uni->fd);
-	ft_send (uni->cs, 0, "SUCCESS\n", 8);
+	ft_send(uni->cs, 0, "SUCCESS\n", 8);
 	free(buff);
 }
 
@@ -49,7 +49,7 @@ void	ft_put(t_bail *uni)
 		return ;
 	else if ((i = ft_strcmp(buff, "ok")) == 0)
 		ft_2put(uni, path, buff);
-	free (path);
+	free(path);
 }
 
 char	*ft_path(char *src)
