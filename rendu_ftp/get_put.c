@@ -6,13 +6,13 @@
 /*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 04:39:53 by mwilk             #+#    #+#             */
-/*   Updated: 2016/03/30 04:39:59 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/30 04:56:47 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-static void	ft_2put(t_bail *uni, char *path, char *buff)
+static void	ft_2put(t_data *uni, char *path, char *buff)
 {
 	int		len;
 
@@ -29,7 +29,7 @@ static void	ft_2put(t_bail *uni, char *path, char *buff)
 	free(buff);
 }
 
-void		ft_put(t_bail *uni)
+void		ft_put(t_data *uni)
 {
 	char	*path;
 	int		i;
@@ -67,7 +67,7 @@ char		*ft_path(char *src)
 	return (path);
 }
 
-void		ft_sget2(t_bail *b, off_t size)
+void		ft_sget2(t_data *b, off_t size)
 {
 	char		*buff;
 
@@ -78,7 +78,7 @@ void		ft_sget2(t_bail *b, off_t size)
 	free(buff);
 }
 
-void		ft_sget(t_bail *b)
+void		ft_sget(t_data *b)
 {
 	char		*path;
 	struct stat	s;

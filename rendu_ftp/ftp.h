@@ -6,7 +6,7 @@
 /*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 21:01:34 by mwilk             #+#    #+#             */
-/*   Updated: 2016/03/29 21:01:36 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/30 04:58:08 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,17 @@
 
 # define SIZE_BLOCK 8
 
-typedef struct			s_bail
+typedef struct			s_truck
+{
+	char				*line;
+	int					i;
+	int					r;
+	int					len;
+	char				*buff;
+	int					fd;
+}						t_truck;
+
+typedef struct			s_data
 {
 	int					port;
 	int					sock;
@@ -38,30 +48,21 @@ typedef struct			s_bail
 	char				*buf;
 	char				*pwd;
 	int					fd;
-}						t_bail;
+}						t_data;
 
-typedef struct			s_truck
-{
-	char				*line;
-	int					i;
-	int					r;
-	int					len;
-	char				*buff;
-	int					fd;
-}						t_truck;
 int						get_next_line(int const fd, char **line);
 void					get_pwd(int sock);
-void					ft_cd(t_bail *uni);
-void					ft_ls(t_bail *uni, int m);
+void					ft_cd(t_data *uni);
+void					ft_ls(t_data *uni, int m);
 void					ft_cput(t_truck *b, int sock);
-void					ft_put(t_bail *uni);
+void					ft_put(t_data *uni);
 void					ft_get(t_truck *uni, int sock);
-void					ft_sget(t_bail *b);
+void					ft_sget(t_data *b);
 void					gest_err(int sock);
-void					ft_mkdir(t_bail *uni);
-int						check_arg(t_bail *uni, int m);
+void					ft_mkdir(t_data *uni);
+int						check_arg(t_data *uni, int m);
 int						c_trans(t_truck *b, int sock);
 size_t					ft_recv(int sock, char **str);
 void					ft_send(int sock, int fd, char *str, size_t size);
-void					err_get(t_bail *uni);
+void					err_get(t_data *uni);
 #endif

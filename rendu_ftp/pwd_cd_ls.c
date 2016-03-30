@@ -6,7 +6,7 @@
 /*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 04:40:08 by mwilk             #+#    #+#             */
-/*   Updated: 2016/03/30 04:40:10 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/30 04:56:48 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void					get_pwd(int sock)
 		gest_err(sock);
 }
 
-void					test_dir(t_bail *uni, char *pwd)
+void					test_dir(t_data *uni, char *pwd)
 {
 	char				*where;
 	int					m;
@@ -54,7 +54,7 @@ void					test_dir(t_bail *uni, char *pwd)
 	return ;
 }
 
-void					ft_cd(t_bail *uni)
+void					ft_cd(t_data *uni)
 {
 	char				*str;
 	int					m;
@@ -112,7 +112,7 @@ static char				*make_ls(int cond, DIR *flux)
 	return (rep);
 }
 
-void					ft_ls(t_bail *uni, int m)
+void					ft_ls(t_data *uni, int m)
 {
 	char				*rep;
 	DIR					*flux;

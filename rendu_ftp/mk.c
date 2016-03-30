@@ -6,13 +6,13 @@
 /*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 21:01:47 by mwilk             #+#    #+#             */
-/*   Updated: 2016/03/30 04:47:27 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/30 04:56:48 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-void		ft_mkdir(t_bail *uni)
+void		ft_mkdir(t_data *uni)
 {
 	char	*str;
 
@@ -51,7 +51,7 @@ void		gest_err(int sock)
 		ft_send(sock, 0, "ERROR buffer trop petit\n", 24);
 }
 
-void		err_get(t_bail *uni)
+void		err_get(t_data *uni)
 {
 	ft_send(uni->cs, 0, "nop", 3);
 	ft_send(uni->cs, 0, "ERROR le document demander \
@@ -59,7 +59,7 @@ void		err_get(t_bail *uni)
 	return ;
 }
 
-int			check_arg(t_bail *uni, int m)
+int			check_arg(t_data *uni, int m)
 {
 	int		i;
 

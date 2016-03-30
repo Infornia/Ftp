@@ -6,7 +6,7 @@
 /*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 21:02:20 by mwilk             #+#    #+#             */
-/*   Updated: 2016/03/29 21:45:58 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/30 04:56:48 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int						create_server(int port)
 	return (sock);
 }
 
-int						translate(t_bail *uni)
+int						translate(t_data *uni)
 {
 	if (ft_strnstr(uni->buf, "pwd", 3) != NULL)
 		get_pwd(uni->cs);
@@ -62,9 +62,9 @@ int						translate(t_bail *uni)
 	return (1);
 }
 
-t_bail					*init_uni(t_bail *uni, char *str)
+t_data					*init_uni(t_data *uni, char *str)
 {
-	uni = (t_bail*)malloc(sizeof(t_bail));
+	uni = (t_data*)malloc(sizeof(t_data));
 	uni->pwd = (char *)malloc(sizeof(char) * 2048);
 	uni->pwd = getcwd(uni->pwd, 2048);
 	uni->port = ft_atoi(str);
@@ -74,7 +74,7 @@ t_bail					*init_uni(t_bail *uni, char *str)
 
 int						main(int ac, char **av)
 {
-	t_bail				*uni;
+	t_data				*uni;
 	unsigned int		cslen;
 	struct sockaddr_in	csin;
 	pid_t				son;
