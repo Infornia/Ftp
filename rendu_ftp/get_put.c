@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   op2.c                                              :+:      :+:    :+:   */
+/*   get_put.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/29 21:02:00 by mwilk             #+#    #+#             */
-/*   Updated: 2016/03/29 21:47:08 by mwilk            ###   ########.fr       */
+/*   Created: 2016/03/30 04:39:53 by mwilk             #+#    #+#             */
+/*   Updated: 2016/03/30 04:39:59 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-void	ft_2put(t_bail *uni, char *path, char *buff)
+static void	ft_2put(t_bail *uni, char *path, char *buff)
 {
 	int		len;
 
@@ -29,7 +29,7 @@ void	ft_2put(t_bail *uni, char *path, char *buff)
 	free(buff);
 }
 
-void	ft_put(t_bail *uni)
+void		ft_put(t_bail *uni)
 {
 	char	*path;
 	int		i;
@@ -52,7 +52,7 @@ void	ft_put(t_bail *uni)
 	free(path);
 }
 
-char	*ft_path(char *src)
+char		*ft_path(char *src)
 {
 	char		*path;
 	int			i;
@@ -67,7 +67,7 @@ char	*ft_path(char *src)
 	return (path);
 }
 
-void	ft_sget2(t_bail *b, off_t size)
+void		ft_sget2(t_bail *b, off_t size)
 {
 	char		*buff;
 
@@ -78,7 +78,7 @@ void	ft_sget2(t_bail *b, off_t size)
 	free(buff);
 }
 
-void	ft_sget(t_bail *b)
+void		ft_sget(t_bail *b)
 {
 	char		*path;
 	struct stat	s;
@@ -92,7 +92,7 @@ void	ft_sget(t_bail *b)
 	else if ((b->i = fstat(b->fd, &s)) == -1)
 	{
 		ft_send(b->cs, 0, "nop", 3);
-		ft_send(b->cs, 0, "ERROR not a files\n", 18);
+		ft_send(b->cs, 0, "ERROR not a file\n", 18);
 	}
 	else if ((s.st_mode & S_IFMT) == S_IFREG)
 	{

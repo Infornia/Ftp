@@ -6,7 +6,7 @@
 #    By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/09 16:17:56 by mwilk             #+#    #+#              #
-#    Updated: 2016/03/04 13:47:40 by mwilk            ###   ########.fr        #
+#    Updated: 2016/03/30 04:41:34 by mwilk            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,8 @@ FLAGS = -Wall -Wextra -Werror
 ## FILES
 
 SRC	=	server.c\
-		option.c \
-		op2.c \
+		pwd_cd_ls.c \
+		get_put.c \
 		mk.c \
 		ft_recv.c \
 		ft_send.c
@@ -64,13 +64,13 @@ $(NAME2): $(OBJ2)
 	@echo "\033[35m <(O.O<) WOW ! Very $(NAME2) ! Amaze ! (>^o^)> \033[0m"
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJ) $(OBJ2)
 	@echo "\033[36mT.T Miss you $(NAME)-object files T.T \033[0m"
 
 fclean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJ) $(OBJ2)
 	@echo "\033[36mT.T Miss you $(NAME)-object files T.T \033[0m"
-	rm -rf $(NAME)
+	rm -rf $(NAME) $(NAME2)
 	@echo "\033[36m X.x Bye Bye $(NAME)-compiled files >_< \033[0m"
 
 %.o:%.c

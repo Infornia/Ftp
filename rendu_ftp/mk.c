@@ -6,7 +6,7 @@
 /*   By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 21:01:47 by mwilk             #+#    #+#             */
-/*   Updated: 2016/03/29 21:01:49 by mwilk            ###   ########.fr       */
+/*   Updated: 2016/03/30 04:47:27 by mwilk            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		ft_mkdir(t_bail *uni)
 			return ;
 		}
 		mkdir(str, 0777);
-		ft_send(uni->cs, 0, "SUCCES\n", 8);
+		ft_send(uni->cs, 0, "SUCCESS\n", 8);
 	}
 }
 
